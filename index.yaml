@@ -3,12 +3,12 @@ entries:
   code-server:
   - apiVersion: v2
     appVersion: 4.4.0
-    created: "2022-06-01T22:24:41.394960677-03:00"
+    created: "2022-06-01T23:43:46.154545017-03:00"
     description: A Helm chart for coder/code-server
     digest: 3754e639bc2ba198fdc47030de86daa2524084a3542fb27e329d54a1e14101ff
     name: code-server
     type: application
     urls:
-    - https://Kduxx.github.io/helm-chart/code-server-2.5.0.tgz
+    - https://kduxx.github.io/helm-charts/code-server-2.5.0.tgz
     version: 2.5.0
-generated: "2022-06-01T22:24:41.394256147-03:00"
+generated: "2022-06-01T23:43:46.153786046-03:00"
