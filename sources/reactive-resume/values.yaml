@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: martadinata666/reactive-resume
+  pullPolicy: IfNotPresent
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+
+traefikIngress: {}
+#  annotations: {}
+#  host: resume.yourhost.com
+#  entryPoints:
+#    - websecure
+#  tls:
+#    secretName: resume-tls
+
+certManagerCertificate: {}
+#  dnsNames:
+#    - resume.yourhost.com
+#  issuer:
+#    kind: ClusterIssuer
+#    name: letsencrypt
+#
+#  secretName: resume-tls

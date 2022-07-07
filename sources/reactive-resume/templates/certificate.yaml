@@ -1,0 +1,14 @@
+{{ if .Values.certManagerCertificate}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "reactive-resume.fullname" . }}
+spec:
+  commonName: {{ include "reactive-resume.fullname" . | quote }}
+  dnsNames:
+    {{- toYaml .Values.certManagerCertificate.dnsNames | nindent 4 }} 
+  issuerRef:
+    kind: {{ .Values.certManagerCertificate.issuer.kind }}
+    name: {{ .Values.certManagerCertificate.issuer.name }}
+  secretName: {{ .Values.certManagerCertificate.secretName }}
+{{ end }}

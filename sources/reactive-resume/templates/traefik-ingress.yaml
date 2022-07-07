@@ -1,0 +1,23 @@
+{{ if .Values.traefikIngress }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  {{- if .Values.traefikIngress.annotations }}
+  annotations:
+    {{- toYaml .Values.traefikIngress.annotations | nindent 4 }}
+  {{- end }}
+  name: {{ include "reactive-resume.fullname" . }}
+spec:
+  entryPoints:
+    {{- toYaml .Values.traefikIngress.entryPoints | nindent 4 }}
+  routes:
+  - kind: Rule
+    match: Host(`{{.Values.traefikIngress.host}}`)
+    services:
+    - name: {{ include "reactive-resume.fullname" . }}
+      port: {{ .Values.service.port }}
+  {{- if .Values.traefikIngress.tls }}
+  tls:
+    secretName: {{ .Values.traefikIngress.tls.secretName }}
+  {{- end }}
+{{ end }}
