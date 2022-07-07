@@ -3,9 +3,9 @@ entries:
   code-server:
   - apiVersion: v2
     appVersion: 4.4.0
-    created: "2022-07-07T10:44:24.003809215-03:00"
+    created: "2022-07-07T10:56:19.144354168-03:00"
     description: A Helm chart for coder/code-server
-    digest: f73ab587cba998aff0126f509947c7371814d65d181f47e33ea5da54fde05625
+    digest: ec6e6c4d01562177ad6ec487ceb7266ba1ed42bc4004b399d3e541628ba87300
     name: code-server
     type: application
     urls:
@@ -14,12 +14,12 @@ entries:
   reactive-resume:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-07-07T10:44:24.004095088-03:00"
+    created: "2022-07-07T10:56:19.144711594-03:00"
     description: A Helm chart for Kubernetes
-    digest: 332eb057cfc316bef4ed74eae9188f2f5add31e3eef468dab39584b76358669b
+    digest: 632aea35432ff4d2065499ecf4cc78a323012158c197814501ccb5cb91657ee9
     name: reactive-resume
     type: application
     urls:
     - https://kduxx.github.io/helm-charts/reactive-resume-0.1.0.tgz
     version: 0.1.0
-generated: "2022-07-07T10:44:24.002692976-03:00"
+generated: "2022-07-07T10:56:19.143527178-03:00"

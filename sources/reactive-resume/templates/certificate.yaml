@@ -4,7 +4,7 @@ kind: Certificate
 metadata:
   name: {{ include "reactive-resume.fullname" . }}
 spec:
-  commonName: {{ include "reactive-resume.fullname" . | quote }}
+  commonName: {{ .Values.certManagerCertificate.commonName }}
   dnsNames:
     {{- toYaml .Values.certManagerCertificate.dnsNames | nindent 4 }} 
   issuerRef:

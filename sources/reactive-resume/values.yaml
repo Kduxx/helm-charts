@@ -23,6 +23,7 @@ traefikIngress: {}
 #    secretName: resume-tls
 
 certManagerCertificate: {}
+#  commonName: resume.yourhost.com
 #  dnsNames:
 #    - resume.yourhost.com
 #  issuer:
