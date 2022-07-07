@@ -6,7 +6,9 @@ metadata:
 spec:
   commonName: {{ .Values.certManagerCertificate.commonName }}
   dnsNames:
-    {{- toYaml .Values.certManagerCertificate.dnsNames | nindent 4 }} 
+  {{- range .Values.certManagerCertificate.dnsNames }}
+  - {{ . | quote }}
+  {{- end }}
   issuerRef:
     kind: {{ .Values.certManagerCertificate.issuer.kind }}
     name: {{ .Values.certManagerCertificate.issuer.name }}
