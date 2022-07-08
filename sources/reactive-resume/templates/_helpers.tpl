@@ -33,9 +33,18 @@ Create chart name and version as used by the chart label.
 {{/*
 Common labels
 */}}
-{{- define "reactive-resume.labels" -}}
+{{- define "reactive-resume.server.labels" -}}
 helm.sh/chart: {{ include "reactive-resume.chart" . }}
-{{ include "reactive-resume.selectorLabels" . }}
+{{ include "reactive-resume.server.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{- define "reactive-resume.client.labels" -}}
+helm.sh/chart: {{ include "reactive-resume.chart" . }}
+{{ include "reactive-resume.client.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -43,10 +52,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels
+Selector labels - server
 */}}
-{{- define "reactive-resume.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "reactive-resume.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "reactive-resume.server.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "reactive-resume.name" . }}-server
+app.kubernetes.io/instance: {{ .Release.Name }}-server
+{{- end }}
+
+{{/*
+Selector labels - client
+*/}}
+{{- define "reactive-resume.client.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "reactive-resume.name" . }}-client
+app.kubernetes.io/instance: {{ .Release.Name }}-client
 {{- end }}
 

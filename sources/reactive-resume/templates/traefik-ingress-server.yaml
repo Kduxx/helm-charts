@@ -1,0 +1,34 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "reactive-resume.fullname" . }}-server-stripprefix
+spec:
+  stripPrefix:
+    forceSlash: true
+    prefixes:
+    - /api
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  {{- if .Values.server.traefikIngress.annotations }}
+  annotations:
+    {{- toYaml .Values.server.traefikIngress.annotations | nindent 4 }}
+  {{- end }}
+  name: {{ include "reactive-resume.fullname" . }}-server
+spec:
+  entryPoints:
+    {{- toYaml .Values.server.traefikIngress.entryPoints | nindent 4 }}
+  routes:
+  - kind: Rule
+    match: Host(`{{.Values.server.traefikIngress.host | default "localhost" }}`) && PathPrefix(`{{.Values.server.traefikIngress.path | default "/" }}`)
+    middlewares:
+    - name: {{ include "reactive-resume.fullname" . }}-server-stripprefix
+    services:
+    - name: {{ include "reactive-resume.fullname" . }}-server
+      port: {{ .Values.server.service.port }}
+  {{- if .Values.server.traefikIngress.tls }}
+  tls:
+    secretName: {{ .Values.server.traefikIngress.tls.secretName }}
+  {{- end }}

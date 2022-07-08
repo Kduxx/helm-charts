@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "reactive-resume.fullname" . }}-server
+  labels:
+    {{- include "reactive-resume.server.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.server.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "reactive-resume.server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.server.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "reactive-resume.server.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.server.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          env:
+            - name: TZ
+              value: {{ .Values.timeZone | quote }}
+            - name: PUBLIC_URL
+              value: {{ .Values.client.url | quote }}
+            - name: PUBLIC_SERVER_URL
+              value: {{ .Values.server.url | quote }}
+            - name: PUBLIC_GOOGLE_CLIENT_ID
+              value: {{ .Values.server.auth.google.clientID | quote }}
+            - name: GOOGLE_CLIENT_SECRET
+              value: {{ .Values.server.auth.google.client_Secret | quote }}
+            - name: SECRET_KEY
+              value: {{ .Values.secretKey | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgresql.auth.database | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.auth.username | quote }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.auth.password | quote }}
+            - name: POSTGRES_HOST
+              value: {{include "reactive-resume.fullname" . }}-postgresql
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgresql.primary.service.ports.postgresql | quote }}
+            - name: STORAGE_BUCKET
+              value: {{ .Values.storage.bucket | quote }}
+            - name: STORAGE_REGION
+              value: {{ .Values.storage.region | quote }}
+            - name: STORAGE_ENDPOINT
+              value: {{ .Values.storage.endpoint | quote }}
+            - name: STORAGE_URL_PREFIX
+              value: {{ .Values.storage.urlPrefix | default "/" | quote }}
+            - name: STORAGE_ACCESS_KEY
+              value: {{ .Values.storage.accessKey | quote }}
+            - name: STORAGE_SECRET_KEY
+              value: {{ .Values.storage.secretKey | quote }}
+            - name: JWT_SECRET
+              value: {{ .Values.jwtSecret }}
+            - name: JWT_EXPIRY_TIME
+              value: "604800"
+          ports:
+            - name: server
+              containerPort: 3100
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: server
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: server

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "reactive-resume.fullname" . }}-server
+  labels:
+    {{- include "reactive-resume.server.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.server.service.type }}
+  ports:
+    - port: {{ .Values.server.service.port }}
+      targetPort: {{ .Values.server.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "reactive-resume.server.selectorLabels" . | nindent 4 }}

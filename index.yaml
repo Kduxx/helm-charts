@@ -3,9 +3,9 @@ entries:
   code-server:
   - apiVersion: v2
     appVersion: 4.4.0
-    created: "2022-07-07T11:06:29.50470346-03:00"
+    created: "2022-07-08T00:51:16.328964176-03:00"
     description: A Helm chart for coder/code-server
-    digest: e52792757a8177b98274be5562454cd1adec9c9056e0608274864cecb9b35bae
+    digest: c97a940dac8fbabc6004e04502ab4a63cb9681b50946191da9157bc8fa302b5d
     name: code-server
     type: application
     urls:
@@ -14,12 +14,17 @@ entries:
   reactive-resume:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-07-07T11:06:29.505042893-03:00"
+    created: "2022-07-08T00:51:16.336538857-03:00"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.15
     description: A Helm chart for Kubernetes
-    digest: 94722743065bcbbbac58083e02533cb6efa4a2eed333b50aaf733e292051a74f
+    digest: a7e2deb15bab7d0e167c9f33efbca3ba7ef2058b674ea7e059f95d20445c0cf7
     name: reactive-resume
     type: application
     urls:
     - https://kduxx.github.io/helm-charts/reactive-resume-0.1.0.tgz
     version: 0.1.0
-generated: "2022-07-07T11:06:29.503866471-03:00"
+generated: "2022-07-08T00:51:16.327797823-03:00"

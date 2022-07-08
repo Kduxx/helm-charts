@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "reactive-resume.fullname" . }}-client
+  labels:
+    {{- include "reactive-resume.client.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.client.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "reactive-resume.client.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.client.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "reactive-resume.client.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.client.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.client.image.repository }}:{{ .Values.client.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.client.image.pullPolicy }}
+          env:
+            - name: TZ
+              value: {{ .Values.timeZone | quote }}
+            - name: PUBLIC_URL
+              value: {{ .Values.client.url | quote }}
+            - name: PUBLIC_SERVER_URL
+              value: {{ .Values.server.url | quote }}
+            - name: PUBLIC_GOOGLE_CLIENT_ID
+              value: {{ .Values.server.auth.google.clientID | quote }}
+            - name: GOOGLE_CLIENT_SECRET
+              value: {{ .Values.server.auth.google.client_Secret | quote }}
+            - name: PUBLIC_FLAG_DISABLE_SIGNUPS
+              value: "true"
+          ports:
+            - name: client
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: client
+          readinessProbe:
+            httpGet:
+              path: /
+              port: client

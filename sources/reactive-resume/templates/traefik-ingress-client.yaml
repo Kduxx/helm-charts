@@ -1,0 +1,22 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  {{- if .Values.client.traefikIngress.annotations }}
+  annotations:
+    {{- toYaml .Values.client.traefikIngress.annotations | nindent 4 }}
+  {{- end }}
+  name: {{ include "reactive-resume.fullname" . }}-client
+spec:
+  entryPoints:
+    {{- toYaml .Values.client.traefikIngress.entryPoints | nindent 4 }}
+  routes:
+  - kind: Rule
+    match: Host(`{{.Values.client.traefikIngress.host | default "localhost" }}`) && PathPrefix(`{{.Values.client.traefikIngress.path | default "/" }}`)
+    services:
+    - name: {{ include "reactive-resume.fullname" . }}-client
+      port: {{ .Values.client.service.port }}
+  {{- if .Values.client.traefikIngress.tls }}
+  tls:
+    secretName: {{ .Values.client.traefikIngress.tls.secretName }}
+  {{- end }}
